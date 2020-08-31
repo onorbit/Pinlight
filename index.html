@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Pinlight</title>
+        <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+        <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+        <link rel="stylesheet" type="text/css" href="style.css" />
+    </head>
+    <body>
+        <div id="subject">
+        </div>
+        <div id="timer">
+        </div>
+        <script>
+            function updateTimer() {
+                remainTimeSec = Math.floor((gTimeExpire - Date.now()) / 1000)
+
+                let timePartMin = Math.floor(remainTimeSec / 60);
+                let timePartSec = remainTimeSec % 60;
+
+                let strMin = timePartMin.toString()
+                if (strMin.length == 1) {
+                    strMin = "0" + strMin;
+                }
+                let strSec = timePartSec.toString()
+                if (strSec.length == 1) {
+                    strSec = "0" + strSec;
+                }
+
+                var timeStr = strMin + ':' + strSec;    
+                document.getElementById("timer").innerHTML = timeStr
+            }
+
+            gSubject = "test subject";
+            gTimeExpire = Date.now() + (45 * 60 * 1000);
+
+            document.getElementById("subject").innerHTML = gSubject
+            updateTimer()
+
+            window.setInterval(updateTimer, 1000);
+        </script>
+    </body>
+</html>
