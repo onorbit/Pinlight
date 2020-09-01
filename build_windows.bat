@@ -1,0 +1,1 @@
+.\node_modules\.bin\electron-packager . Pinlight --platform=win32 --arch=x64 --out=build\
