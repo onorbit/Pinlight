@@ -13,11 +13,65 @@
         <div id="timer">
         </div>
         <script>
-            function updateTimer() {
-                remainTimeSec = Math.floor((gTimeExpire - Date.now()) / 1000)
+            // configurations
+            gConfig = {
+                subject: "test subject",
+                sprintSpanMin: 45,
+                cooldownSpanMin: 15
+            };
 
-                let timePartMin = Math.floor(remainTimeSec / 60);
-                let timePartSec = remainTimeSec % 60;
+            // status
+            gStatus = {
+                remainSpanMsec: 0,
+                isInSprint: false,
+
+                ticker: null,
+                lastTickedMsec: 0
+            };
+
+            // initSprint() sets current timer to 10 seconds cooldown before sprint begins.
+            function initSprint() {
+                gStatus.remainSpanMsec = 10 * 1000;
+                gStatus.isInSprint = false;
+            }
+
+            function pauseTimer() {
+                if (gStatus.ticker != null) {
+                    window.clearInterval(gStatus.ticker);
+                    gStatus.ticker = null;
+                }
+            }
+
+            function startTimer() {
+                if (gStatus.ticker == null) {
+                    gStatus.lastTickedMsec = Date.now()
+                    gStatus.ticker = window.setInterval(tickerFunc, 1000);
+                }
+            }
+
+            function tickerFunc() {
+                let timeNow = Date.now();
+                gStatus.remainSpanMsec -= timeNow - gStatus.lastTickedMsec;
+                gStatus.lastTickedMsec = timeNow;
+
+                if (gStatus.remainSpanMsec <= 0) {
+                    if (gStatus.isInSprint == false) {
+                        gStatus.remainSpanMsec += gConfig.sprintSpanMin * 60 * 1000;
+                        gStatus.isInSprint = true;
+                    }
+                }
+
+                updateTimerElem();
+            }
+
+            function updateSubjectElem() {
+                document.getElementById("subject").innerHTML = gConfig.subject
+            }
+
+            function updateTimerElem() {
+                let remainSpanSec = gStatus.remainSpanMsec / 1000;
+                let timePartMin = Math.floor(remainSpanSec / 60);
+                let timePartSec = Math.floor(remainSpanSec % 60);
 
                 let strMin = timePartMin.toString()
                 if (strMin.length == 1) {
@@ -29,16 +83,13 @@
                 }
 
                 var timeStr = strMin + ':' + strSec;    
-                document.getElementById("timer").innerHTML = timeStr
+                document.getElementById("timer").innerHTML = timeStr;
             }
 
-            gSubject = "test subject";
-            gTimeExpire = Date.now() + (45 * 60 * 1000);
-
-            document.getElementById("subject").innerHTML = gSubject
-            updateTimer()
-
-            window.setInterval(updateTimer, 1000);
+            initSprint();
+            updateSubjectElem();
+            updateTimerElem()
+            startTimer();
         </script>
     </body>
 </html>

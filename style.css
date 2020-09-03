@@ -1,14 +1,17 @@
 body {
+    margin: 5px;
     height: 100%;
+
     -webkit-app-region: drag;
 }
 
 div#subject {
     text-align: center;
-    font-size: 12pt;
+    font-size: 11pt;
 }
 
 div#timer {
     text-align: center;
-    font-size: 16pt;
+    font-size: 20pt;
+    font-weight: lighter;
 }
