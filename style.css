@@ -5,6 +5,46 @@ body {
     -webkit-app-region: drag;
 }
 
+div.holder {
+    margin: 0px;
+
+    vertical-align: middle;
+
+    display: table-cell;
+}
+
+div#holder-left {
+    width: 25px;
+}
+
+div#holder-main {
+    width: 250px;
+}
+
+div#holder-right {
+    width: 25px;
+}
+
+div.button {
+    width: 20px;
+    height: 20px;
+
+    border-style: solid;
+    border-width: 1px;
+    border-color: #aaa;
+    border-radius: 8px;
+
+    text-align: center;
+
+    font-size: 11pt;
+
+    -webkit-app-region: no-drag;
+}
+
+div.button:not(:last-child) {
+    margin-bottom: 3px;
+}
+
 div#subject {
     text-align: center;
     font-size: 11pt;

@@ -8,9 +8,18 @@
         <link rel="stylesheet" type="text/css" href="style.css" />
     </head>
     <body>
-        <div id="subject">
+        <div class="holder" id="holder-left">
+            <div class="button">+</div>
         </div>
-        <div id="timer">
+        <div class="holder" id="holder-main">
+            <div id="subject">
+            </div>
+            <div id="timer">
+            </div>
+        </div>
+        <div class="holder" id="holder-right">
+            <div class="button" id="button-pause" onclick="onClickPause()">=</div>
+            <div class="button">|></div>
         </div>
         <script>
             // configurations
@@ -28,6 +37,16 @@
                 ticker: null,
                 lastTickedMsec: 0
             };
+
+            function onClickPause() {
+                if (gStatus.ticker == null) {
+                    startTimer();
+                    document.getElementById("button-pause").innerHTML = "=";
+                } else {
+                    pauseTimer();
+                    document.getElementById("button-pause").innerHTML = ">";
+                }
+            }
 
             // initSprint() sets current timer to 10 seconds cooldown before sprint begins.
             function initSprint() {
