@@ -19,96 +19,9 @@
         </div>
         <div class="holder" id="holder-right">
             <div class="button" id="button-pause" onclick="onClickPause()">=</div>
-            <div class="button">|></div>
+            <div class="button" id="button-sprint" onclick="onClickSprint()">|></div>
+            <div class="button" id="button-cooldown" onclick="onClickCooldown()">>|</div>
         </div>
-        <script>
-            // configurations
-            gConfig = {
-                subject: "test subject",
-                sprintSpanMin: 45,
-                cooldownSpanMin: 15
-            };
-
-            // status
-            gStatus = {
-                remainSpanMsec: 0,
-                isInSprint: false,
-
-                ticker: null,
-                lastTickedMsec: 0
-            };
-
-            function onClickPause() {
-                if (gStatus.ticker == null) {
-                    startTimer();
-                    document.getElementById("button-pause").innerHTML = "=";
-                } else {
-                    pauseTimer();
-                    document.getElementById("button-pause").innerHTML = ">";
-                }
-            }
-
-            // initSprint() sets current timer to 10 seconds cooldown before sprint begins.
-            function initSprint() {
-                gStatus.remainSpanMsec = 10 * 1000;
-                gStatus.isInSprint = false;
-            }
-
-            function pauseTimer() {
-                if (gStatus.ticker != null) {
-                    window.clearInterval(gStatus.ticker);
-                    gStatus.ticker = null;
-                }
-            }
-
-            function startTimer() {
-                if (gStatus.ticker == null) {
-                    gStatus.lastTickedMsec = Date.now()
-                    gStatus.ticker = window.setInterval(tickerFunc, 1000);
-                }
-            }
-
-            function tickerFunc() {
-                let timeNow = Date.now();
-                gStatus.remainSpanMsec -= timeNow - gStatus.lastTickedMsec;
-                gStatus.lastTickedMsec = timeNow;
-
-                if (gStatus.remainSpanMsec <= 0) {
-                    if (gStatus.isInSprint == false) {
-                        gStatus.remainSpanMsec += gConfig.sprintSpanMin * 60 * 1000;
-                        gStatus.isInSprint = true;
-                    }
-                }
-
-                updateTimerElem();
-            }
-
-            function updateSubjectElem() {
-                document.getElementById("subject").innerHTML = gConfig.subject
-            }
-
-            function updateTimerElem() {
-                let remainSpanSec = gStatus.remainSpanMsec / 1000;
-                let timePartMin = Math.floor(remainSpanSec / 60);
-                let timePartSec = Math.floor(remainSpanSec % 60);
-
-                let strMin = timePartMin.toString()
-                if (strMin.length == 1) {
-                    strMin = "0" + strMin;
-                }
-                let strSec = timePartSec.toString()
-                if (strSec.length == 1) {
-                    strSec = "0" + strSec;
-                }
-
-                var timeStr = strMin + ':' + strSec;    
-                document.getElementById("timer").innerHTML = timeStr;
-            }
-
-            initSprint();
-            updateSubjectElem();
-            updateTimerElem()
-            startTimer();
-        </script>
+        <script type="text/javascript" src="pinlight.js"></script>
     </body>
 </html>
