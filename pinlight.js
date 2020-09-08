@@ -11,64 +11,86 @@ gStatus = {
     status: "cooldown",
 
     ticker: null,
-    lastTickedMsec: 0
+    lastTickedMsec: 0,
+
+    prepareSprint: function() {
+        this.remainSpanMsec = 10 * 1000;
+        this.status = "cooldown";
+    },
+
+    startSprint: function() {
+        if (this.status == "cooldown") {
+            this.remainSpanMsec = 0;
+        }
+    },
+
+    startCooldown: function() {
+        this.remainSpanMsec = gConfig.cooldownSpanMin * 60 * 1000;
+        this.status = "cooldown";
+    },
+
+    startTimer: function() {
+        if (this.ticker == null) {
+            this.lastTickedMsec = Date.now()
+            this.ticker = window.setInterval(tickerFunc, 1000);
+        }
+    },
+
+    pauseTimer: function() {
+        if (this.ticker != null) {
+            window.clearInterval(this.ticker);
+            this.ticker = null;
+        }
+    },
+
+    tick: function() {
+        let timeNow = Date.now();
+        this.remainSpanMsec -= timeNow - this.lastTickedMsec;
+        this.lastTickedMsec = timeNow;
+
+        if (this.remainSpanMsec <= 0) {
+            if (this.status == "cooldown") {
+                this.remainSpanMsec += gConfig.sprintSpanMin * 60 * 1000;
+                this.status = "sprint";
+
+                return true;
+            } else {
+                this.status = "oversprint";
+
+                return true;
+            }
+        }
+
+        return false;
+    }
 };
 
 function onClickPause() {
     if (gStatus.ticker == null) {
-        startTimer();
+        gStatus.startTimer();
         document.getElementById("button-pause").innerHTML = "=";
     } else {
-        pauseTimer();
+        gStatus.pauseTimer();
         document.getElementById("button-pause").innerHTML = ">";
     }
 }
 
 function onClickSprint() {
-    gStatus.remainSpanMsec = 0;
+    gStatus.startSprint();
 }
 
 function onClickCooldown() {
-    gStatus.remainSpanMsec = gConfig.cooldownSpanMin * 60 * 1000;
-    gStatus.status = "cooldown";
+    gStatus.startCooldown();
+
     updateStatus();
     updateTimerElem();
 }
 
-// initSprint() sets current timer to 10 seconds cooldown before sprint begins.
-function initSprint() {
-    gStatus.remainSpanMsec = 10 * 1000;
-    gStatus.status = "cooldown";
-}
-
-function pauseTimer() {
-    if (gStatus.ticker != null) {
-        window.clearInterval(gStatus.ticker);
-        gStatus.ticker = null;
-    }
-}
-
-function startTimer() {
-    if (gStatus.ticker == null) {
-        gStatus.lastTickedMsec = Date.now()
-        gStatus.ticker = window.setInterval(tickerFunc, 1000);
-    }
-}
-
 function tickerFunc() {
-    let timeNow = Date.now();
-    gStatus.remainSpanMsec -= timeNow - gStatus.lastTickedMsec;
-    gStatus.lastTickedMsec = timeNow;
+    let isStatusChanged = gStatus.tick();
 
-    if (gStatus.remainSpanMsec <= 0) {
-        if (gStatus.status == "cooldown") {
-            gStatus.remainSpanMsec += gConfig.sprintSpanMin * 60 * 1000;
-            gStatus.status = "sprint";
-            updateStatus();
-        } else {
-            gStatus.status = "oversprint";
-            updateStatus();
-        }
+    if (isStatusChanged) {
+        updateStatus();
     }
 
     updateTimerElem();
@@ -130,8 +152,8 @@ function updateStatus() {
     }
 }
 
-initSprint();
+gStatus.prepareSprint();
 updateStatus();
 updateSubjectElem();
 updateTimerElem();
-startTimer();
+gStatus.startTimer();
