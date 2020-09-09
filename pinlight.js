@@ -13,6 +13,9 @@ gStatus = {
     ticker: null,
     lastTickedMsec: 0,
 
+    funcUpdateStatus: null,
+    funcUpdateTimerElem: null,
+
     prepareSprint: function() {
         this.remainSpanMsec = 10 * 1000;
         this.status = "cooldown";
@@ -32,7 +35,16 @@ gStatus = {
     startTimer: function() {
         if (this.ticker == null) {
             this.lastTickedMsec = Date.now()
-            this.ticker = window.setInterval(tickerFunc, 1000);
+
+            var self = this;
+            this.ticker = window.setInterval(function() {
+                let isStatusChanged = self.tick();
+
+                if (isStatusChanged) {
+                    self.funcUpdateStatus();
+                }
+                self.funcUpdateTimerElem();
+            }, 1000);
         }
     },
 
@@ -83,16 +95,6 @@ function onClickCooldown() {
     gStatus.startCooldown();
 
     updateStatus();
-    updateTimerElem();
-}
-
-function tickerFunc() {
-    let isStatusChanged = gStatus.tick();
-
-    if (isStatusChanged) {
-        updateStatus();
-    }
-
     updateTimerElem();
 }
 
@@ -152,8 +154,13 @@ function updateStatus() {
     }
 }
 
+gStatus.funcUpdateStatus = updateStatus;
+gStatus.funcUpdateTimerElem = updateTimerElem;
+
 gStatus.prepareSprint();
-updateStatus();
+
 updateSubjectElem();
-updateTimerElem();
+gStatus.funcUpdateStatus();
+gStatus.funcUpdateTimerElem();
+
 gStatus.startTimer();
