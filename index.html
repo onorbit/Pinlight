@@ -9,7 +9,9 @@
     </head>
     <body>
         <div id="edit">
-            <div class="holder">
+            <div class="holder-side">
+            </div>
+            <div class="holder-main">
                 <div>
                     <input type="text" id="edit-subject" />
                 </div>
@@ -18,21 +20,21 @@
                     <span>S <input type="text" id="edit-sprint" /></span>
                 </div>
             </div>
-            <div class="holder">
+            <div class="holder-side">
                 <div class="button" id="button-editdone" onclick="onClickEditDone()">+</div>
             </div>
         </div>
         <div id="watch">
-            <div class="holder" id="holder-left">
+            <div class="holder-side">
                 <div class="button" id="button-edit" onclick="onClickEdit()">+</div>
             </div>
-            <div class="holder" id="holder-main">
+            <div class="holder-main">
                 <div id="subject">
                 </div>
                 <div id="timer">
                 </div>
             </div>
-            <div class="holder" id="holder-right">
+            <div class="holder-side">
                 <div class="button" id="button-pause" onclick="onClickPause()">=</div>
                 <div class="button" id="button-sprint" onclick="onClickSprint()">|></div>
                 <div class="button" id="button-cooldown" onclick="onClickCooldown()">>|</div>
