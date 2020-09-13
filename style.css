@@ -37,6 +37,30 @@ body.cooldown {
 	}
 }
 
+input {
+    -webkit-app-region: no-drag;
+}
+
+div#edit {
+    display: none;
+}
+
+input#edit-subject {
+    width: 200px;
+}
+
+input#edit-cooldown {
+    width: 40px;
+}
+
+input#edit-sprint {
+    width: 40px;
+}
+
+div#watch {
+    display: block;
+}
+
 div.holder {
     margin: 0px;
 

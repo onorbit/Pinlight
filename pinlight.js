@@ -77,6 +77,27 @@ gStatus = {
     }
 };
 
+function onClickEdit() {
+    document.getElementById("edit-subject").value = gConfig.subject;
+    document.getElementById("edit-cooldown").value = gConfig.cooldownSpanMin;
+    document.getElementById("edit-sprint").value = gConfig.sprintSpanMin;
+
+    document.getElementById("watch").style.display = "none";
+    document.getElementById("edit").style.display = "block";
+}
+
+function onClickEditDone() {
+    gConfig.subject = document.getElementById("edit-subject").value;
+    gConfig.cooldownSpanMin = parseInt(document.getElementById("edit-cooldown").value);
+    gConfig.sprintSpanMin = parseInt(document.getElementById("edit-sprint").value);
+
+    updateSubjectElem();
+    gStatus.prepareSprint();
+
+    document.getElementById("edit").style.display = "none";
+    document.getElementById("watch").style.display = "block";
+}
+
 function onClickPause() {
     if (gStatus.ticker == null) {
         gStatus.startTimer();
