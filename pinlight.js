@@ -78,6 +78,8 @@ gStatus = {
 };
 
 function onClickEdit() {
+    gStatus.pauseTimer();
+
     document.getElementById("edit-subject").value = gConfig.subject;
     document.getElementById("edit-cooldown").value = gConfig.cooldownSpanMin;
     document.getElementById("edit-sprint").value = gConfig.sprintSpanMin;
@@ -96,6 +98,8 @@ function onClickEditDone() {
 
     document.getElementById("edit").style.display = "none";
     document.getElementById("watch").style.display = "block";
+
+    gStatus.startTimer();
 }
 
 function onClickPause() {

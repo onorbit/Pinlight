@@ -39,6 +39,17 @@ body.cooldown {
 
 input {
     -webkit-app-region: no-drag;
+
+    background-color: rgba(0,0,0,0);
+
+    text-align: center;
+    font-size: 11pt;
+    color: #fff;
+
+    border-style: solid;
+    border-color: #fff;
+    border-width: 1px;
+    border-radius: 8px;
 }
 
 div#edit {
