@@ -19,6 +19,9 @@ gStatus = {
     prepareSprint: function() {
         this.remainSpanMsec = 10 * 1000;
         this.status = "cooldown";
+
+        this.funcUpdateStatus();
+        this.funcUpdateTimerElem();
     },
 
     startSprint: function() {
@@ -89,12 +92,18 @@ function onClickEdit() {
 }
 
 function onClickEditDone() {
-    gConfig.subject = document.getElementById("edit-subject").value;
-    gConfig.cooldownSpanMin = parseInt(document.getElementById("edit-cooldown").value);
-    gConfig.sprintSpanMin = parseInt(document.getElementById("edit-sprint").value);
+    let subject = document.getElementById("edit-subject").value;
+    let cooldownSpanMin = parseInt(document.getElementById("edit-cooldown").value);
+    let sprintSpanMin = parseInt(document.getElementById("edit-sprint").value);
 
-    updateSubjectElem();
-    gStatus.prepareSprint();
+    if (subject != gConfig.subject || cooldownSpanMin != gConfig.cooldownSpanMin || sprintSpanMin != gConfig.sprintSpanMin) {
+        gConfig.subject = subject;
+        gConfig.cooldownSpanMin = cooldownSpanMin;
+        gConfig.sprintSpanMin = sprintSpanMin;
+
+        updateSubjectElem();
+        gStatus.prepareSprint();
+    }
 
     document.getElementById("edit").style.display = "none";
     document.getElementById("watch").style.display = "block";
@@ -182,10 +191,7 @@ function updateStatus() {
 gStatus.funcUpdateStatus = updateStatus;
 gStatus.funcUpdateTimerElem = updateTimerElem;
 
-gStatus.prepareSprint();
-
 updateSubjectElem();
-gStatus.funcUpdateStatus();
-gStatus.funcUpdateTimerElem();
+gStatus.prepareSprint();
 
 gStatus.startTimer();
