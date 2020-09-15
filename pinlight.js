@@ -145,7 +145,7 @@ function updateTimerElem() {
     }
 
     let timePartHour = Math.floor(timeValueSec / 60 / 60);
-    let timePartMin = Math.floor(timeValueSec / 60);
+    let timePartMin = Math.floor((timeValueSec - timePartHour * 60 * 60) / 60);
     let timePartSec = Math.floor(timeValueSec % 60);
 
     let strHour = timePartHour.toString()
