@@ -11,6 +11,7 @@ function createWindow() {
     })
 
     win.setAlwaysOnTop(true);
+    win.setResizable(false);
     win.loadFile('index.html');
 }
 
