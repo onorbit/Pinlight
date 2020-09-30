@@ -1,8 +1,11 @@
+const { ipcRenderer } = require('electron');
+
 // configurations
+const params = new URLSearchParams(global.location.search);
 gConfig = {
-    subject: "test subject",
-    sprintSpanMin: 1,
-    cooldownSpanMin: 1
+    subject: params.get("subject"),
+    sprintSpanMin: params.get("sprintSpanMin"),
+    cooldownSpanMin: params.get("cooldownSpanMin")
 };
 
 // status
@@ -102,6 +105,13 @@ gFrontend = {
             gConfig.subject = subject;
             gConfig.cooldownSpanMin = cooldownSpanMin;
             gConfig.sprintSpanMin = sprintSpanMin;
+
+            let data = {
+                subject: subject,
+                cooldownSpanMin: cooldownSpanMin,
+                sprintSpanMin: sprintSpanMin
+            };
+            ipcRenderer.send('config-modified', data);
 
             this.updateSubjectElem();
             gStatus.prepareSprint();
